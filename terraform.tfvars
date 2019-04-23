@@ -1,5 +1,5 @@
-env_name                        = "pcf"
-nsx_hostname                    = ""
+env_name                        = "test"
+nsx_hostname                    = "nsx.example.com"
 nsx_user                        = ""
 nsx_password                    = ""
 
@@ -24,3 +24,12 @@ services_subnet_cidr            = "192.168.24.1/23"
 edge_cluster_name               = "edge-cluster"
 transport_zone_vlan_name        = "tz-vlan"
 transport_zone_overlay_name     = "tz-overlay"
+
+opsmanager_server_pool_name     = "OM"
+router_server_pool_name         = "RSP"
+diego_brain_server_pool_name    = "DBSP"
+
+ops_manager_private_ip          = "192.168.20.10"
+opsmanager_public_ip            = "10.0.1.18"
+pas_routers_public_ip           = "10.0.1.19"
+pas_diego_brains_public_ip      = "10.0.1.20"

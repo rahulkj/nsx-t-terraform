@@ -22,3 +22,11 @@ variable "services_subnet_cidr" {}
 variable "router_t0" {}
 variable "uplink_router_ip" {}
 variable "static_route_next_hop_ip" {}
+
+variable "ops_manager_private_ip" {}
+variable "opsmanager_public_ip" {}
+variable "pas_routers_public_ip" {}
+variable "pas_diego_brains_public_ip" {}
+variable "opsmanager_server_pool_name" {}
+variable "router_server_pool_name" {}
+variable "diego_brain_server_pool_name" {}

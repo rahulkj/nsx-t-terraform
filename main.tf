@@ -33,4 +33,14 @@ module "modules" {
   router_t0                     = "${var.router_t0}"
   uplink_router_ip              = "${var.uplink_router_ip}"
   static_route_next_hop_ip      = "${var.static_route_next_hop_ip}"
+
+  opsmanager_server_pool_name   = "${var.opsmanager_server_pool_name}"
+  router_server_pool_name       = "${var.router_server_pool_name}"
+  diego_brain_server_pool_name  = "${var.diego_brain_server_pool_name}"
+
+  ops_manager_private_ip        = "${var.ops_manager_private_ip}"
+  opsmanager_public_ip          = "${var.opsmanager_public_ip}"
+  pas_routers_public_ip         = "${var.pas_routers_public_ip}"
+  pas_diego_brains_public_ip    = "${var.pas_diego_brains_public_ip}"
+
 }
