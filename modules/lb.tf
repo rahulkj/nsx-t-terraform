@@ -5,7 +5,7 @@ resource "nsxt_lb_tcp_monitor" "om_tcp_monitor" {
   interval     = 5
   monitor_port = 443
   rise_count   = 3
-  timeout      = 10
+  timeout      = 15
 }
 
 resource "nsxt_lb_tcp_monitor" "pcf_tcp_monitor" {
@@ -14,7 +14,7 @@ resource "nsxt_lb_tcp_monitor" "pcf_tcp_monitor" {
   fall_count   = 3
   interval     = 5
   rise_count   = 3
-  timeout      = 10
+  timeout      = 15
 }
 
 # Server Pools
@@ -81,6 +81,9 @@ resource "nsxt_lb_tcp_virtual_server" "routers_virtual_server" {
   ip_address                 = "${var.pas_routers_public_ip}"
   ports                      = ["443"]
   pool_id                    = "${nsxt_lb_pool.router_server_pool.id}"
+  depends_on        = [
+    "nsxt_lb_tcp_virtual_server.ops_manager_virtual_server"
+  ]
 }
 
 resource "nsxt_lb_tcp_virtual_server" "diego_brains_virtual_server" {
@@ -91,6 +94,10 @@ resource "nsxt_lb_tcp_virtual_server" "diego_brains_virtual_server" {
   ip_address                 = "${var.pas_diego_brains_public_ip}"
   ports                      = ["2222"]
   pool_id                    = "${nsxt_lb_pool.diego_brain_server_pool.id}"
+  depends_on        = [
+    "nsxt_lb_tcp_virtual_server.ops_manager_virtual_server",
+    "nsxt_lb_tcp_virtual_server.routers_virtual_server"
+  ]
 }
 
 resource "nsxt_lb_service" "pcf_lb" {
@@ -102,10 +109,16 @@ resource "nsxt_lb_service" "pcf_lb" {
   error_log_level   = "INFO"
   size              = "SMALL"
 
-  depends_on        = ["nsxt_logical_router_link_port_on_tier1.link_port_tier1_infrastructure"]
   virtual_server_ids  = [
-              "${nsxt_lb_tcp_virtual_server.ops_manager_virtual_server.id}",
-              "${nsxt_lb_tcp_virtual_server.routers_virtual_server.id}",
-              "${nsxt_lb_tcp_virtual_server.diego_brains_virtual_server.id}"
-            ]
+    "${nsxt_lb_tcp_virtual_server.ops_manager_virtual_server.id}",
+    "${nsxt_lb_tcp_virtual_server.routers_virtual_server.id}",
+    "${nsxt_lb_tcp_virtual_server.diego_brains_virtual_server.id}"
+  ]
+
+  depends_on        = [
+    "nsxt_logical_router_link_port_on_tier1.link_port_tier1_infrastructure",
+    "nsxt_lb_tcp_virtual_server.ops_manager_virtual_server",
+    "nsxt_lb_tcp_virtual_server.routers_virtual_server",
+    "nsxt_lb_tcp_virtual_server.diego_brains_virtual_server"
+  ]
 }

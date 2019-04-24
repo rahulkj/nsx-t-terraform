@@ -9,7 +9,7 @@ resource "nsxt_ip_pool" "external_snat_ip_pool" {
 
   tag = {
     tag = "ncp/external"
-    scope = true
+    scope = "true"
   }
 
   subnet = {
