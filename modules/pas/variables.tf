@@ -7,9 +7,9 @@ variable "transport_zone_overlay_name" {}
 variable "pcf_ip_block_name" {}
 variable "pcf_ip_block_cidr" {}
 
-variable "external_snat_ip_pool_name" {}
-variable "external_snat_ip_pool_range" {}
-variable "external_snat_ip_pool_cidr" {}
+variable "pas_snat_ip_pool_name" {}
+variable "pas_snat_ip_pool_range" {}
+variable "pas_snat_ip_pool_cidr" {}
 
 variable "infrastructure_ls" {}
 variable "pas_ls" {}
@@ -27,6 +27,11 @@ variable "ops_manager_private_ip" {}
 variable "opsmanager_public_ip" {}
 variable "pas_routers_public_ip" {}
 variable "pas_diego_brains_public_ip" {}
-variable "opsmanager_server_pool_name" {}
+variable "pas_istio_public_ip" {}
+
 variable "router_server_pool_name" {}
 variable "diego_brain_server_pool_name" {}
+variable "istio_server_pool_name" {}
+
+variable "snat_public_ip" {}
+variable "snat_cidr" {}
