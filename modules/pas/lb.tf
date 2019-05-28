@@ -1,6 +1,6 @@
 resource "nsxt_lb_tcp_monitor" "istio_tcp_monitor" {
-  description  = "om_tcp_monitor provisioned by Terraform"
-  display_name = "om_tcp_monitor"
+  description  = "istio_tcp_monitor provisioned by Terraform"
+  display_name = "istio_tcp_monitor"
   fall_count   = 3
   interval     = 5
   monitor_port = 8002
