@@ -71,4 +71,10 @@ module "pks" {
 
   pks_api_private_ip            = "${var.pks_api_private_ip}"
   pks_public_ip                 = "${var.pks_public_ip}"
+
+  pks_pods_ip_block_name        = "${var.pks_pods_ip_block_name}"
+  pks_pods_ip_block_cidr        = "${var.pks_pods_ip_block_cidr}"
+
+  pks_nodes_ip_block_name       = "${var.pks_nodes_ip_block_name}"
+  pks_nodes_ip_block_cidr       = "${var.pks_nodes_ip_block_cidr}"
 }

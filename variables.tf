@@ -54,3 +54,9 @@ variable "snat_cidr" {}
 
 variable "pks_api_private_ip" {}
 variable "pks_public_ip" {}
+
+variable "pks_pods_ip_block_name" {}
+variable "pks_pods_ip_block_cidr" {}
+
+variable "pks_nodes_ip_block_name" {}
+variable "pks_nodes_ip_block_cidr" {}

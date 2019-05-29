@@ -10,10 +10,6 @@ pas_snat_ip_pool_name           = "pcf-floating-ip-pool"
 pas_snat_ip_pool_range          = "10.0.1.35-10.0.1.45"
 pas_snat_ip_pool_cidr           = "10.0.0.0/23"
 
-pks_snat_ip_pool_name           = "pks-floating-ip-pool"
-pks_snat_ip_pool_range          = "10.0.1.46-10.0.1.55"
-pks_snat_ip_pool_cidr           = "10.0.0.0/23"
-
 router_t0                       = "ROUTER-T0"
 infrastructure_ls               = "INFRASTRUCTURE"
 pas_ls                          = "DEPLOYMENT"
@@ -48,3 +44,13 @@ snat_cidr                       = "192.168.0.0/16"
 
 pks_api_private_ip              = "192.168.16.11"
 pks_public_ip                   = "10.0.1.33"
+
+pks_snat_ip_pool_name           = "pks-floating-ip-pool"
+pks_snat_ip_pool_range          = "10.0.1.46-10.0.1.55"
+pks_snat_ip_pool_cidr           = "10.0.0.0/23"
+
+pks_pods_ip_block_name           = "pks-pods-ip-block"
+pks_pods_ip_block_cidr           = "172.16.64.0/19"
+
+pks_nodes_ip_block_name          = "pks-nodes-ip-block"
+pks_nodes_ip_block_cidr          = "192.168.64.0/19"

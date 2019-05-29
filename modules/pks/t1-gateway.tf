@@ -33,8 +33,8 @@ resource "nsxt_logical_router_link_port_on_tier1" "link_port_tier1_pks" {
 
 resource "nsxt_logical_port" "logical_port1_pks" {
   admin_state       = "UP"
-  description       = "LP-PKS provisioned by Terraform"
-  display_name      = "LP-PKS"
+  description       = "LP1 provisioned by Terraform"
+  display_name      = "LP1"
   logical_switch_id = "${nsxt_logical_switch.pks.id}"
 }
 
