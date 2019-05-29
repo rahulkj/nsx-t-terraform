@@ -20,8 +20,8 @@ resource "nsxt_logical_tier0_router" "t0_router" {
 
 resource "nsxt_logical_port" "logical_port1_uplinks" {
   admin_state       = "UP"
-  description       = "LP1 provisioned by Terraform"
-  display_name      = "LP1"
+  description       = "LP-UPLINKS provisioned by Terraform"
+  display_name      = "LP-UPLINKS"
   logical_switch_id = "${nsxt_vlan_logical_switch.uplinks.id}"
 }
 

@@ -99,22 +99,22 @@ resource "nsxt_logical_router_link_port_on_tier1" "link_port_tier1_services" {
 
 resource "nsxt_logical_port" "logical_port1_infrastructure" {
   admin_state       = "UP"
-  description       = "LP1 provisioned by Terraform"
-  display_name      = "LP1"
+  description       = "LP-INFRASTRUCTURE provisioned by Terraform"
+  display_name      = "LP-INFRASTRUCTURE"
   logical_switch_id = "${nsxt_logical_switch.infrastructure.id}"
 }
 
 resource "nsxt_logical_port" "logical_port1_pas" {
   admin_state       = "UP"
-  description       = "LP1 provisioned by Terraform"
-  display_name      = "LP1"
+  description       = "LP-PAS provisioned by Terraform"
+  display_name      = "LP-PAS"
   logical_switch_id = "${nsxt_logical_switch.pas.id}"
 }
 
 resource "nsxt_logical_port" "logical_port1_services" {
   admin_state       = "UP"
-  description       = "LP1 provisioned by Terraform"
-  display_name      = "LP1"
+  description       = "LP-SERVICES provisioned by Terraform"
+  display_name      = "LP-SERVICES"
   logical_switch_id = "${nsxt_logical_switch.services.id}"
 }
 
