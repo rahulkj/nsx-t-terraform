@@ -26,6 +26,9 @@ resource "nsxt_lb_pool" "router_server_pool" {
   tcp_multiplexing_enabled = false
   tcp_multiplexing_number  = 6
   active_monitor_id        = "${nsxt_lb_tcp_monitor.pcf_tcp_monitor.id}"
+  snat_translation {
+    type = "SNAT_AUTO_MAP"
+  }
 }
 
 resource "nsxt_lb_pool" "diego_brain_server_pool" {
@@ -36,6 +39,9 @@ resource "nsxt_lb_pool" "diego_brain_server_pool" {
   tcp_multiplexing_enabled = false
   tcp_multiplexing_number  = 6
   active_monitor_id        = "${nsxt_lb_tcp_monitor.pcf_tcp_monitor.id}"
+  snat_translation {
+    type = "SNAT_AUTO_MAP"
+  }
 }
 
 resource "nsxt_lb_pool" "istio_server_pool" {
@@ -46,6 +52,9 @@ resource "nsxt_lb_pool" "istio_server_pool" {
   tcp_multiplexing_enabled = false
   tcp_multiplexing_number  = 6
   active_monitor_id        = "${nsxt_lb_tcp_monitor.istio_tcp_monitor.id}"
+  snat_translation {
+    type = "SNAT_AUTO_MAP"
+  }
 }
 
 # Virtual Servers
