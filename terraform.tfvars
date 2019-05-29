@@ -31,6 +31,8 @@ edge_cluster_name               = "edge-cluster"
 transport_zone_vlan_name        = "tz-vlan"
 transport_zone_overlay_name     = "tz-overlay"
 
+loadbalancer_type               = "SMALL" # SMALL | MEDIUM | LARGE
+
 router_server_pool_name         = "RouterServerPool"
 diego_brain_server_pool_name    = "DiegoBrainServerPool"
 istio_server_pool_name          = "IstioServerPool"

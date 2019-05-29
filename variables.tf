@@ -37,6 +37,8 @@ variable "router_t0" {}
 variable "uplink_router_ip" {}
 variable "static_route_next_hop_ip" {}
 
+variable "loadbalancer_type" {}
+
 variable "router_server_pool_name" {}
 variable "diego_brain_server_pool_name" {}
 variable "istio_server_pool_name" {}

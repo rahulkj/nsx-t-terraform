@@ -107,7 +107,7 @@ resource "nsxt_lb_service" "pcf_lb" {
   enabled           = true
   logical_router_id = "${nsxt_logical_tier1_router.infrastructure_t1.id}"
   error_log_level   = "INFO"
-  size              = "SMALL"
+  size              = "${var.loadbalancer_type}"
 
   virtual_server_ids  = [
     "${nsxt_lb_tcp_virtual_server.routers_virtual_server.id}",

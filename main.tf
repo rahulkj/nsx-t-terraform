@@ -23,6 +23,7 @@ module "pas" {
   pas_snat_ip_pool_name         = "${var.pas_snat_ip_pool_name}"
   pas_snat_ip_pool_range        = "${var.pas_snat_ip_pool_range}"
   pas_snat_ip_pool_cidr         = "${var.pas_snat_ip_pool_cidr}"
+
   infrastructure_ls             = "${var.infrastructure_ls}"
   pas_ls                        = "${var.pas_ls}"
   services_ls                   = "${var.services_ls}"
@@ -33,6 +34,8 @@ module "pas" {
   router_t0                     = "${var.router_t0}"
   uplink_router_ip              = "${var.uplink_router_ip}"
   static_route_next_hop_ip      = "${var.static_route_next_hop_ip}"
+
+  loadbalancer_type             = "${var.loadbalancer_type}"
 
   router_server_pool_name       = "${var.router_server_pool_name}"
   diego_brain_server_pool_name  = "${var.diego_brain_server_pool_name}"

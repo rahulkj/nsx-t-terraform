@@ -25,6 +25,8 @@ variable "static_route_next_hop_ip" {}
 
 variable "ops_manager_private_ip" {}
 variable "opsmanager_public_ip" {}
+
+variable "loadbalancer_type" {}
 variable "pas_routers_public_ip" {}
 variable "pas_diego_brains_public_ip" {}
 variable "pas_istio_public_ip" {}
