@@ -11,11 +11,6 @@ resource "nsxt_logical_tier0_router" "t0_router" {
   description            = "ACTIVE-STANDBY Tier0 router provisioned by Terraform"
   high_availability_mode = "ACTIVE_STANDBY"
   edge_cluster_id        = "${data.nsxt_edge_cluster.edge_cluster.id}"
-
-  tag {
-    tag   = "ncp/cluster"
-    scope = "${var.env_name}"
-  }
 }
 
 resource "nsxt_logical_port" "logical_port1_uplinks" {

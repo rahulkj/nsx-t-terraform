@@ -146,14 +146,4 @@ resource "nsxt_spoofguard_switching_profile" "ncp_ha_profile" {
   description                       = "ncp-ha provisioned by Terraform"
   display_name                      = "ncp-ha"
   address_binding_whitelist_enabled = "true"
-
-  tag = {
-    tag = "ncp/cluster"
-    scope = "${var.env_name}"
-  }
-
-  tag = {
-    tag = "ncp/ha"
-    scope = "true"
-  }
 }
