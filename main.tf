@@ -41,6 +41,10 @@ module "pas" {
   diego_brain_server_pool_name = var.diego_brain_server_pool_name
   istio_server_pool_name       = var.istio_server_pool_name
 
+  router_ns_group_name       = var.router_ns_group_name
+  diego_brain_ns_group_name  = var.diego_brain_ns_group_name
+  istio_router_ns_group_name = var.istio_router_ns_group_name
+
   ops_manager_private_ip     = var.ops_manager_private_ip
   opsmanager_public_ip       = var.opsmanager_public_ip
   pas_routers_public_ip      = var.pas_routers_public_ip
@@ -49,6 +53,10 @@ module "pas" {
 
   snat_public_ip = var.snat_public_ip
   snat_cidr      = var.snat_cidr
+
+  pcf_firewall_top_section    = var.pcf_firewall_top_section
+  pcf_firewall_bottom_section = var.pcf_firewall_bottom_section
+
 }
 
 module "pks" {
@@ -77,5 +85,7 @@ module "pks" {
 
   pks_nodes_ip_block_name = var.pks_nodes_ip_block_name
   pks_nodes_ip_block_cidr = var.pks_nodes_ip_block_cidr
-}
 
+  harbor_private_ip = var.harbor_private_ip
+  harbor_public_ip  = var.harbor_public_ip
+}
