@@ -1,9 +1,9 @@
 ---
 ## What does this repository provide?
-Terraform scripts that prepares the NSX-T environment for deploying OpsManager, PAS and PKS
+Terraform scripts that prepares the NSX-T environment for deploying OpsManager, TAS and TKGI
 
 ## Pre-requisites:
-* Use terraform 0.11.14
+* Use terraform 0.12.xx
 * Prepare the hosts
 * Deploy the edges and edge cluster
 * Fill in the details in `terraform.tfvars`
@@ -12,22 +12,22 @@ Terraform scripts that prepares the NSX-T environment for deploying OpsManager, 
 
 > `terraform init`
 
-> `terraform plan -out=plan1`
+> `terraform plan -out=nsx`
 
-> `terraform apply plan1`
+> `terraform apply "nsx"`
 
 When the `apply` is executed, the following objects are created and tagged:
 
-- T0 Router (and tagged)
-- 4 T1 Routers (one for each INFRASTRUCTURE, DEPLOYMENT, SERVICES, PKS)
-- 5 Segments (Switches) (one for each INFRASTRUCTURE, DEPLOYMENT, SERVICES, PKS)
+- T0 Gateway (and tagged)
+- 4 T1 Gateway (one for each INFRASTRUCTURE, DEPLOYMENT, SERVICES, TKGI)
+- 5 Segments (Switches) (one for each INFRASTRUCTURE, DEPLOYMENT, SERVICES, TKGI)
 - External IP Pools for
-  - SNAT for PAS (and tagged)
-  - SNAT for PKS
+  - SNAT for TAS (and tagged)
+  - SNAT for TKGI
 - NAT Rules
   - SNAT private CIDR's to external
   - DNAT to OpsManager
-  - DNAT to PKS API
+  - DNAT to TKGI API
 - Segment profiles (and tagged)
 - 1 Small load balancer
 - 3 Virtual Servers
@@ -38,6 +38,3 @@ When the `apply` is executed, the following objects are created and tagged:
   - GoRouters (monitor port 443)
   - Diego Brains (monitor port 2222)
   - Istio Routers (monitor port 8002)
-
-## Post terraform
-* You need to create the `UPLINK` port and attach to the T0 router and all the NAT rules (feature gap with current NSX-T Terraform)
