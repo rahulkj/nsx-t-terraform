@@ -10,7 +10,7 @@ provider "nsxt" {
 }
 
 module "t0_gateway" {
-  source = "./modules/t0"
+  source = "../modules/t0"
 
   edge_cluster              = var.edge_cluster
   vlan_tz                   = var.vlan_tz
@@ -23,8 +23,18 @@ module "t0_gateway" {
   t0_gateway_ip_addresses   = var.t0_gateway_ip_addresses
 }
 
+module "t1_gateway_automation" {
+  source = "../modules/t1"
+
+  edge_cluster    = var.edge_cluster
+  t0_gateway_path = module.t0_gateway.path
+  overlay_tz      = var.overlay_tz
+  t1_gateway_name = var.t1_gateway_automation
+  t1_gateway_cidr = var.t1_gateway_automation_cidr
+}
+
 module "t1_gateway_infra" {
-  source = "./modules/t1"
+  source = "../modules/t1"
 
   edge_cluster    = var.edge_cluster
   t0_gateway_path = module.t0_gateway.path
@@ -34,7 +44,7 @@ module "t1_gateway_infra" {
 }
 
 module "t1_gateway_tas" {
-  source = "./modules/t1"
+  source = "../modules/t1"
 
   edge_cluster    = var.edge_cluster
   t0_gateway_path = module.t0_gateway.path
@@ -44,7 +54,7 @@ module "t1_gateway_tas" {
 }
 
 module "t1_gateway_services" {
-  source = "./modules/t1"
+  source = "../modules/t1"
 
   edge_cluster    = var.edge_cluster
   t0_gateway_path = module.t0_gateway.path
@@ -54,7 +64,7 @@ module "t1_gateway_services" {
 }
 
 module "t1_gateway_tkgi" {
-  source = "./modules/t1"
+  source = "../modules/t1"
 
   edge_cluster    = var.edge_cluster
   t0_gateway_path = module.t0_gateway.path
@@ -63,8 +73,18 @@ module "t1_gateway_tkgi" {
   t1_gateway_cidr = var.t1_gateway_tkgi_cidr
 }
 
+module "t1_gateway_tkg" {
+  source = "../modules/t1"
+
+  edge_cluster    = var.edge_cluster
+  t0_gateway_path = module.t0_gateway.path
+  overlay_tz      = var.overlay_tz
+  t1_gateway_name = var.t1_gateway_tkg
+  t1_gateway_cidr = var.t1_gateway_tkg_cidr
+}
+
 module "snat_rule" {
-  source = "./modules/snat"
+  source = "../modules/snat"
 
   t0_gateway_path = module.t0_gateway.path
   rule_name       = var.snat_rule_name
@@ -72,8 +92,26 @@ module "snat_rule" {
   public_ip       = var.snat_public_ip
 }
 
+module "jumpbox_dnat_rule" {
+  source = "../modules/dnat"
+
+  t0_gateway_path = module.t0_gateway.path
+  rule_name       = var.jumpbox_dnat_rule_name
+  public_ip       = var.jumpbox_public_ip
+  private_ip      = var.jumpbox_private_ip
+}
+
+module "concourse_dnat_rule" {
+  source = "../modules/dnat"
+
+  t0_gateway_path = module.t0_gateway.path
+  rule_name       = var.concourse_dnat_rule_name
+  public_ip       = var.concourse_public_ip
+  private_ip      = var.concourse_private_ip
+}
+
 module "opsmanager_dnat_rule" {
-  source = "./modules/dnat"
+  source = "../modules/dnat"
 
   t0_gateway_path = module.t0_gateway.path
   rule_name       = var.opsmanager_dnat_rule_name
@@ -82,7 +120,7 @@ module "opsmanager_dnat_rule" {
 }
 
 module "tkgi_dnat_rule" {
-  source = "./modules/dnat"
+  source = "../modules/dnat"
 
   t0_gateway_path = module.t0_gateway.path
   rule_name       = var.tkgi_dnat_rule_name
@@ -91,7 +129,7 @@ module "tkgi_dnat_rule" {
 }
 
 module "harbor_dnat_rule" {
-  source = "./modules/dnat"
+  source = "../modules/dnat"
 
   t0_gateway_path = module.t0_gateway.path
   rule_name       = var.harbor_dnat_rule_name
@@ -100,28 +138,28 @@ module "harbor_dnat_rule" {
 }
 
 module "tas_ip_block" {
-  source = "./modules/ip-block"
+  source = "../modules/ip-block"
 
   ip_block_name = var.tas_ip_block_name
   ip_block_cidr = var.tas_ip_block_cidr
 }
 
 module "tkgi_nodes_ip_block" {
-  source = "./modules/ip-block"
+  source = "../modules/ip-block"
 
   ip_block_name = var.tkgi_nodes_ip_block_name
   ip_block_cidr = var.tkgi_nodes_ip_block_cidr
 }
 
 module "tkgi_pods_ip_block" {
-  source = "./modules/ip-block"
+  source = "../modules/ip-block"
 
   ip_block_name = var.tkgi_pods_ip_block_name
   ip_block_cidr = var.tkgi_pods_ip_block_cidr
 }
 
 module "tas_snat_ip_pool" {
-  source = "./modules/ip-pool"
+  source = "../modules/ip-pool"
 
   ip_pool_name        = var.tas_snat_ip_pool_name
   ip_pool_cidr        = var.tas_snat_ip_pool_cidr
@@ -131,7 +169,7 @@ module "tas_snat_ip_pool" {
 }
 
 module "tkgi_snat_ip_pool" {
-  source = "./modules/ip-pool"
+  source = "../modules/ip-pool"
 
   ip_pool_name        = var.tkgi_snat_ip_pool_name
   ip_pool_cidr        = var.tkgi_snat_ip_pool_cidr
@@ -141,7 +179,7 @@ module "tkgi_snat_ip_pool" {
 }
 
 module "workload_lb" {
-  source = "./modules/loadbalancer"
+  source = "../modules/loadbalancer"
 
   lb_name         = var.workload_lb_name
   lb_type         = var.workload_lb_type
@@ -149,7 +187,7 @@ module "workload_lb" {
 }
 
 module "routers_nsgroups_pool_virtualserver" {
-  source = "./modules/nsgroups-pool-virtualserver"
+  source = "../modules/nsgroups-pool-virtualserver"
 
   ns_group_name           = var.router_ns_group_name
   server_pool_name        = var.router_server_pool_name
@@ -162,7 +200,7 @@ module "routers_nsgroups_pool_virtualserver" {
 }
 
 module "diego_brains_nsgroups_pool_virtualserver" {
-  source = "./modules/nsgroups-pool-virtualserver"
+  source = "../modules/nsgroups-pool-virtualserver"
 
   ns_group_name           = var.diego_brain_ns_group_name
   server_pool_name        = var.diego_brain_server_pool_name
@@ -175,7 +213,7 @@ module "diego_brains_nsgroups_pool_virtualserver" {
 }
 
 module "istio_routers_nsgroups_pool_virtualserver" {
-  source = "./modules/nsgroups-pool-virtualserver"
+  source = "../modules/nsgroups-pool-virtualserver"
 
   ns_group_name           = var.istio_router_ns_group_name
   server_pool_name        = var.istio_router_server_pool_name

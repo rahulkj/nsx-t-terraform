@@ -1,7 +1,3 @@
-output "router_t0_id" {
-  value = module.t0_gateway.id
-}
-
 output "tkgi_floating_ip_pool_id" {
   value = module.tkgi_snat_ip_pool.id
 }

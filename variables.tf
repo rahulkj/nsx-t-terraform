@@ -16,6 +16,11 @@ variable "vlan_ids" {
   type = list(string)
 }
 
+variable "t1_gateway_automation" {}
+variable "t1_gateway_automation_cidr" {
+  type = list(string)
+}
+
 variable "t1_gateway_infra" {}
 variable "t1_gateway_infra_cidr" {
   type = list(string)
@@ -36,6 +41,11 @@ variable "t1_gateway_tkgi_cidr" {
   type = list(string)
 }
 
+variable "t1_gateway_tkg" {}
+variable "t1_gateway_tkg_cidr" {
+  type = list(string)
+}
+
 variable "snat_rule_name" {}
 variable "snat_cidr" {
   type = list(string)
@@ -43,6 +53,23 @@ variable "snat_cidr" {
 variable "snat_public_ip" {
   type = list(string)
 }
+
+variable "jumpbox_dnat_rule_name" {}
+variable "jumpbox_public_ip" {
+  type = list(string)
+}
+variable "jumpbox_private_ip" {
+  type = list(string)
+}
+
+variable "concourse_dnat_rule_name" {}
+variable "concourse_public_ip" {
+  type = list(string)
+}
+variable "concourse_private_ip" {
+  type = list(string)
+}
+
 variable "opsmanager_dnat_rule_name" {}
 variable "opsmanager_public_ip" {
   type = list(string)
