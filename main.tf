@@ -1,6 +1,6 @@
 provider "nsxt" {
-  host                  = var.nsx_hostname
-  username              = var.nsx_user
+  host                  = var.nsx_manager
+  username              = var.nsx_username
   password              = var.nsx_password
   allow_unverified_ssl  = true
   max_retries           = 10
@@ -9,83 +9,218 @@ provider "nsxt" {
   retry_on_status_codes = [429]
 }
 
-module "pas" {
-  source = "./modules/pas"
+module "t0_gateway" {
+  source = "../modules/t0"
 
-  env_name = var.env_name
-
-  edge_cluster_name           = var.edge_cluster_name
-  transport_zone_vlan_name    = var.transport_zone_vlan_name
-  transport_zone_overlay_name = var.transport_zone_overlay_name
-
-  pcf_ip_block_name      = var.pcf_ip_block_name
-  pcf_ip_block_cidr      = var.pcf_ip_block_cidr
-  pas_snat_ip_pool_name  = var.pas_snat_ip_pool_name
-  pas_snat_ip_pool_range = var.pas_snat_ip_pool_range
-  pas_snat_ip_pool_cidr  = var.pas_snat_ip_pool_cidr
-
-  infrastructure_ls = var.infrastructure_ls
-  pas_ls            = var.pas_ls
-  services_ls       = var.services_ls
-
-  infrastructure_subnet_cidr = var.infrastructure_subnet_cidr
-  pas_subnet_cidr            = var.pas_subnet_cidr
-  services_subnet_cidr       = var.services_subnet_cidr
-  router_t0                  = var.router_t0
-  uplink_router_ip           = var.uplink_router_ip
-  static_route_next_hop_ip   = var.static_route_next_hop_ip
-
-  loadbalancer_type = var.loadbalancer_type
-
-  router_server_pool_name      = var.router_server_pool_name
-  diego_brain_server_pool_name = var.diego_brain_server_pool_name
-  istio_server_pool_name       = var.istio_server_pool_name
-
-  router_ns_group_name       = var.router_ns_group_name
-  diego_brain_ns_group_name  = var.diego_brain_ns_group_name
-  istio_router_ns_group_name = var.istio_router_ns_group_name
-
-  ops_manager_private_ip     = var.ops_manager_private_ip
-  opsmanager_public_ip       = var.opsmanager_public_ip
-  pas_routers_public_ip      = var.pas_routers_public_ip
-  pas_diego_brains_public_ip = var.pas_diego_brains_public_ip
-  pas_istio_public_ip        = var.pas_istio_public_ip
-
-  snat_public_ip = var.snat_public_ip
-  snat_cidr      = var.snat_cidr
-
-  pcf_firewall_top_section    = var.pcf_firewall_top_section
-  pcf_firewall_bottom_section = var.pcf_firewall_bottom_section
-
+  edge_cluster              = var.edge_cluster
+  vlan_tz                   = var.vlan_tz
+  t0_gateway_name           = var.t0_gateway
+  static_route_network_cidr = var.static_route_network_cidr
+  static_route_next_hop     = var.static_route_next_hop
+  t0_segment_name           = var.t0_segment
+  vlan_ids                  = var.vlan_ids
+  t0_gateway_interface_name = var.t0_gateway_interface_name
+  t0_gateway_ip_addresses   = var.t0_gateway_ip_addresses
 }
 
-module "pks" {
-  source = "./modules/pks"
+module "t1_gateway_automation" {
+  source = "../modules/t1"
 
-  env_name = var.env_name
+  edge_cluster    = var.edge_cluster
+  t0_gateway_path = module.t0_gateway.path
+  overlay_tz      = var.overlay_tz
+  t1_gateway_name = var.t1_gateway_automation
+  t1_gateway_cidr = var.t1_gateway_automation_cidr
+}
 
-  edge_cluster_name           = var.edge_cluster_name
-  transport_zone_vlan_name    = var.transport_zone_vlan_name
-  transport_zone_overlay_name = var.transport_zone_overlay_name
+module "t1_gateway_infra" {
+  source = "../modules/t1"
 
-  router_t0 = module.pas.router_t0
+  edge_cluster    = var.edge_cluster
+  t0_gateway_path = module.t0_gateway.path
+  overlay_tz      = var.overlay_tz
+  t1_gateway_name = var.t1_gateway_infra
+  t1_gateway_cidr = var.t1_gateway_infra_cidr
+}
 
-  pks_snat_ip_pool_name  = var.pks_snat_ip_pool_name
-  pks_snat_ip_pool_range = var.pks_snat_ip_pool_range
-  pks_snat_ip_pool_cidr  = var.pks_snat_ip_pool_cidr
+module "t1_gateway_tas" {
+  source = "../modules/t1"
 
-  pks_ls          = var.pks_ls
-  pks_subnet_cidr = var.pks_subnet_cidr
+  edge_cluster    = var.edge_cluster
+  t0_gateway_path = module.t0_gateway.path
+  overlay_tz      = var.overlay_tz
+  t1_gateway_name = var.t1_gateway_tas
+  t1_gateway_cidr = var.t1_gateway_tas_cidr
+}
 
-  pks_api_private_ip = var.pks_api_private_ip
-  pks_public_ip      = var.pks_public_ip
+module "t1_gateway_services" {
+  source = "../modules/t1"
 
-  pks_pods_ip_block_name = var.pks_pods_ip_block_name
-  pks_pods_ip_block_cidr = var.pks_pods_ip_block_cidr
+  edge_cluster    = var.edge_cluster
+  t0_gateway_path = module.t0_gateway.path
+  overlay_tz      = var.overlay_tz
+  t1_gateway_name = var.t1_gateway_services
+  t1_gateway_cidr = var.t1_gateway_services_cidr
+}
 
-  pks_nodes_ip_block_name = var.pks_nodes_ip_block_name
-  pks_nodes_ip_block_cidr = var.pks_nodes_ip_block_cidr
+module "t1_gateway_tkgi" {
+  source = "../modules/t1"
 
-  harbor_private_ip = var.harbor_private_ip
-  harbor_public_ip  = var.harbor_public_ip
+  edge_cluster    = var.edge_cluster
+  t0_gateway_path = module.t0_gateway.path
+  overlay_tz      = var.overlay_tz
+  t1_gateway_name = var.t1_gateway_tkgi
+  t1_gateway_cidr = var.t1_gateway_tkgi_cidr
+}
+
+module "t1_gateway_tkg" {
+  source = "../modules/t1"
+
+  edge_cluster    = var.edge_cluster
+  t0_gateway_path = module.t0_gateway.path
+  overlay_tz      = var.overlay_tz
+  t1_gateway_name = var.t1_gateway_tkg
+  t1_gateway_cidr = var.t1_gateway_tkg_cidr
+}
+
+module "snat_rule" {
+  source = "../modules/snat"
+
+  t0_gateway_path = module.t0_gateway.path
+  rule_name       = var.snat_rule_name
+  cidr            = var.snat_cidr
+  public_ip       = var.snat_public_ip
+}
+
+module "jumpbox_dnat_rule" {
+  source = "../modules/dnat"
+
+  t0_gateway_path = module.t0_gateway.path
+  rule_name       = var.jumpbox_dnat_rule_name
+  public_ip       = var.jumpbox_public_ip
+  private_ip      = var.jumpbox_private_ip
+}
+
+module "concourse_dnat_rule" {
+  source = "../modules/dnat"
+
+  t0_gateway_path = module.t0_gateway.path
+  rule_name       = var.concourse_dnat_rule_name
+  public_ip       = var.concourse_public_ip
+  private_ip      = var.concourse_private_ip
+}
+
+module "opsmanager_dnat_rule" {
+  source = "../modules/dnat"
+
+  t0_gateway_path = module.t0_gateway.path
+  rule_name       = var.opsmanager_dnat_rule_name
+  public_ip       = var.opsmanager_public_ip
+  private_ip      = var.opsmanager_private_ip
+}
+
+module "tkgi_dnat_rule" {
+  source = "../modules/dnat"
+
+  t0_gateway_path = module.t0_gateway.path
+  rule_name       = var.tkgi_dnat_rule_name
+  public_ip       = var.tkgi_public_ip
+  private_ip      = var.tkgi_api_private_ip
+}
+
+module "harbor_dnat_rule" {
+  source = "../modules/dnat"
+
+  t0_gateway_path = module.t0_gateway.path
+  rule_name       = var.harbor_dnat_rule_name
+  public_ip       = var.harbor_public_ip
+  private_ip      = var.harbor_private_ip
+}
+
+module "tas_ip_block" {
+  source = "../modules/ip-block"
+
+  ip_block_name = var.tas_ip_block_name
+  ip_block_cidr = var.tas_ip_block_cidr
+}
+
+module "tkgi_nodes_ip_block" {
+  source = "../modules/ip-block"
+
+  ip_block_name = var.tkgi_nodes_ip_block_name
+  ip_block_cidr = var.tkgi_nodes_ip_block_cidr
+}
+
+module "tkgi_pods_ip_block" {
+  source = "../modules/ip-block"
+
+  ip_block_name = var.tkgi_pods_ip_block_name
+  ip_block_cidr = var.tkgi_pods_ip_block_cidr
+}
+
+module "tas_snat_ip_pool" {
+  source = "../modules/ip-pool"
+
+  ip_pool_name        = var.tas_snat_ip_pool_name
+  ip_pool_cidr        = var.tas_snat_ip_pool_cidr
+  ip_pool_gateway     = var.tas_snat_ip_pool_gateway
+  ip_pool_range_start = var.tas_snat_ip_pool_range_start
+  ip_pool_range_end   = var.tas_snat_ip_pool_range_end
+}
+
+module "tkgi_snat_ip_pool" {
+  source = "../modules/ip-pool"
+
+  ip_pool_name        = var.tkgi_snat_ip_pool_name
+  ip_pool_cidr        = var.tkgi_snat_ip_pool_cidr
+  ip_pool_gateway     = var.tkgi_snat_ip_pool_gateway
+  ip_pool_range_start = var.tkgi_snat_ip_pool_range_start
+  ip_pool_range_end   = var.tkgi_snat_ip_pool_range_end
+}
+
+module "workload_lb" {
+  source = "../modules/loadbalancer"
+
+  lb_name         = var.workload_lb_name
+  lb_type         = var.workload_lb_type
+  t1_gateway_path = module.t1_gateway_infra.path
+}
+
+module "routers_nsgroups_pool_virtualserver" {
+  source = "../modules/nsgroups-pool-virtualserver"
+
+  ns_group_name           = var.router_ns_group_name
+  server_pool_name        = var.router_server_pool_name
+  public_ip               = var.router_public_ip
+  ports                   = ["443"]
+  lb_path                 = module.workload_lb.path
+  app_profile             = var.router_lb_application_profile
+  active_lb_monitor_name  = var.router_active_lb_monitor_name
+  passive_lb_monitor_name = var.router_passive_lb_monitor_name
+}
+
+module "diego_brains_nsgroups_pool_virtualserver" {
+  source = "../modules/nsgroups-pool-virtualserver"
+
+  ns_group_name           = var.diego_brain_ns_group_name
+  server_pool_name        = var.diego_brain_server_pool_name
+  public_ip               = var.diego_brain_public_ip
+  ports                   = ["2222"]
+  lb_path                 = module.workload_lb.path
+  app_profile             = var.diego_brain_lb_application_profile
+  active_lb_monitor_name  = var.diego_brain_active_lb_monitor_name
+  passive_lb_monitor_name = var.diego_brain_passive_lb_monitor_name
+}
+
+module "istio_routers_nsgroups_pool_virtualserver" {
+  source = "../modules/nsgroups-pool-virtualserver"
+
+  ns_group_name           = var.istio_router_ns_group_name
+  server_pool_name        = var.istio_router_server_pool_name
+  public_ip               = var.istio_router_server_public_ip
+  ports                   = ["443"]
+  lb_path                 = module.workload_lb.path
+  app_profile             = var.istio_router_lb_application_profile
+  active_lb_monitor_name  = var.istio_router_active_lb_monitor_name
+  passive_lb_monitor_name = var.istio_router_passive_lb_monitor_name
 }
