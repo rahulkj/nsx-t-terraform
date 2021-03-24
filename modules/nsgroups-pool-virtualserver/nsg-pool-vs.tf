@@ -1,6 +1,6 @@
 resource "nsxt_policy_group" "ns_group" {
   display_name = var.ns_group_name
-  description  = "${var.ns_group_name} + created by Terraform"
+  description  = "${var.ns_group_name} created by Terraform"
 }
 
 resource "nsxt_policy_lb_pool" "server_pool" {
@@ -31,8 +31,6 @@ resource "nsxt_policy_lb_virtual_server" "virtual_server" {
   enabled                    = true
   ip_address                 = var.public_ip
   ports                      = var.ports
-  max_concurrent_connections = 6
-  max_new_connection_rate    = 20
   service_path               = var.lb_path
   pool_path                  = nsxt_policy_lb_pool.server_pool.path
   application_profile_path   = data.nsxt_policy_lb_app_profile.app_profile.path
